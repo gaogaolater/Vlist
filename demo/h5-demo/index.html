@@ -77,7 +77,6 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            color: #000;
             margin-top:6px;
         }
 
@@ -119,13 +118,13 @@
     <div class="list" id="list">
         <ul></ul>
     </div>
-    <script src="../js/vlist.js"></script>
+    <script src="../../src/vlist.js"></script>
     <script type="text/javascript">
         // init vConsole
         var vConsole = new VConsole();
         var vlist = new Vlist({
             itemHeight: 180,
-            containerId: 'list',
+            container: document.querySelector("#list"),
             containerHeight: document.documentElement.clientHeight,
             loadData: load,
             render: function (itemData, index) {
