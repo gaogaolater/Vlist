@@ -1,3 +1,6 @@
+/**
+ * Vlist
+ */
 (function (global, factory) {
     (typeof exports === 'object' && typeof module !== 'undefined') ? module.exports = factory() : (global.Vlist = factory());
 }(this, function () {
@@ -107,9 +110,7 @@
             //全部渲染
             items.forEach((item, idx) => {
                 item.index = startIndexNew + idx;
-                item.top = item.index * itemHeight;
-                item.dom.innerHTML = startIndexNew + idx;
-                item.dom.top = item.top + "px";
+                this.renderItem(item);
             })
         } else {
             //部分渲染

@@ -1,0 +1,27 @@
+{
+  "name": "vlist",
+  "version": "1.0.0",
+  "description": "虚拟滚动列表",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaogaolater/Vlist.git"
+  },
+  "keywords": [
+    "虚拟滚动",
+    "virtual",
+    "list"
+  ],
+  "author": "gaogao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaogaolater/Vlist/issues"
+  },
+  "homepage": "https://github.com/gaogaolater/Vlist#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
