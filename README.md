@@ -10,6 +10,9 @@ vitural list Infinite Scrolling 虚拟列表，无限滚动，高性能列表
 ## 支持环境和框架
 支持原生js开发以及react和vue框架
 
+## 效果
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20190215141430134.gif)
+
 ## 使用方法
 详见demo
 
