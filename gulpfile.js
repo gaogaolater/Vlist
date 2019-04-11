@@ -2,7 +2,7 @@ var gulp = require('gulp');
 
 
 var config = {
-    src: './src/vlist.js'
+    src: './src/**'
 }
 
 gulp.task('copy', function () {

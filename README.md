@@ -14,6 +14,4 @@ vitural list Infinite Scrolling 虚拟列表，无限滚动，高性能列表
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190215141430134.gif)
 
 ## 使用方法
-详见demo
-
-
+详见demo h5-demo已适配

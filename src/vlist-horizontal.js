@@ -6,11 +6,12 @@
 }(this, function () {
     function Vlist(param) {
         this.locker = false;//ajax request locker
-        this.itemHeight = param.itemHeight;//每一项的高度
+        this.itemWidth = param.itemWidth;//每一项的高度
+        this.itemHeight = param.itemHeight;//每一项的
         this.container = param.container;//容器
         this.containerUL = this.container.querySelector("ul");//容器内的ul
-        this.maxHeight = param.maxHeight ? param.maxHeight : document.documentElement.clientHeight;
-        this.showItemCount = Math.ceil(this.maxHeight / this.itemHeight) + 1;//视图区域显示item的个数
+        this.containerWidth = param.containerWidth ? param.containerWidth : document.documentElement.clientWidth;
+        this.showItemCount = Math.ceil(this.containerWidth / this.itemWidth) + 1;//视图区域显示item的个数
         this.items = [];//可见列表项
         this.startIndex = 0;//第一个item索引
         this.render = param.render;//渲染每一项的函数
@@ -38,15 +39,17 @@
         var index = item.index;
         var itemDom = item.dom ? item.dom : document.createElement("LI");
         var itemData = this.data[index];
+        var left = parseInt(index * this.itemWidth);
         itemDom.innerHTML = this.render(itemData, index);
         itemDom.style.position = "absolute";
-        itemDom.style.top = (index * this.itemHeight) + "px";
-        itemDom.style.height = this.itemHeight + "px";
-        itemDom.style.width = "100%";
+        itemDom.style.left = left + "px";
+        itemDom.style.top = 0;
+        itemDom.style.width = this.itemWidth + "px";
+        itemDom.style.height = "100%";
         itemDom.style.overflow = "hidden";
         item.dom = itemDom;
         item.dom.setAttribute("index", index);
-        item.top = index * this.itemHeight;
+        item.left = left;
         return item;
     }
 
@@ -81,15 +84,13 @@
         this.locker = false;
         let isInit = this.data.length == 0;
         this.data = this.data.concat(data);
-        var realHeight = parseInt(this.data.length * this.itemHeight);
-        if (realHeight > this.maxHeight) {
-            this.container.style.height = this.maxHeight + 'px';
-            this.showItemCount = Math.ceil(this.maxHeight / this.itemHeight) + 1;//视图区域显示item的个数
+        var realWidth = parseInt(this.data.length * this.itemWidth);
+        if (realWidth > this.containerWidth) {
+            this.showItemCount = Math.ceil(this.containerWidth / this.itemWidth) + 1;//视图区域显示item的个数
         } else {
-            this.container.style.height = realHeight + 'px';
             this.showItemCount = this.data.length + 1;//视图区域显示item的个数
         }
-        this.containerUL.style.height = realHeight + 'px';
+        this.containerUL.style.width = realWidth + 'px';
         if (isInit) {
             this.initList();
         }
@@ -104,7 +105,7 @@
             this.loadingDom.innerText = "加载中...";
         }
         this.loadingDom.style.position = "absolute";
-        this.loadingDom.style.top = (this.items[this.items.length - 1].top + this.itemHeight) + 'px';
+        this.loadingDom.style.left = (this.items[this.items.length - 1].left + this.itemWidth) + 'px';
         this.containerUL.appendChild(this.loadingDom);
     }
 
@@ -147,11 +148,11 @@
 
     //滚动事件
     Vlist.prototype.scrollEvent = function () {
-        var containerScrollTop = this.container.scrollTop;
-        var itemHeight = this.itemHeight;
+        var containerScrollLeft = this.container.scrollLeft;
+        var itemWidth = this.itemWidth;
         var startIndex = this.startIndex;
-        if (containerScrollTop < 0) return;//ios兼容
-        var startIndexNew = Math.floor(containerScrollTop / itemHeight);
+        if (containerScrollLeft < 0) return;//ios兼容
+        var startIndexNew = Math.floor(containerScrollLeft / itemWidth);
         var maxStartIndex = this.data.length - this.showItemCount + 1;
         //android手机兼容性问题
         startIndexNew = startIndexNew > maxStartIndex ? maxStartIndex : startIndexNew;

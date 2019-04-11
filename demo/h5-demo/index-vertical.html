@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>Vlist</title>
+    <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+    <script src="https://cdn.bootcss.com/vConsole/3.2.2/vconsole.min.js"></script>
+</head>
+
+<body>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #eee;
+        }
+
+        .list {
+            width: 100%;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            /*兼容ios 否则滑动不流畅*/
+        }
+
+        .list ul {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            list-style: none;
+            position: relative;
+        }
+
+        .list ul li {
+            position: relative;
+        }
+
+        .list .item {
+            background: white;
+            width: 96%;
+            margin-left: 2%;
+            height: 170px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .list .item img {
+            width: 160px;
+            height: 160px;
+            margin: 5px;
+            float: left;
+        }
+
+        .list ul li .item .right {
+            height: 170px;
+            margin-left: 170px;
+            overflow: hidden;
+        }
+
+        .list ul li .item .right .title {
+            font-size: 16px;
+            color: #3e3936;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .list ul li .item .right .price {
+            color: #c9040d;
+            font-size: 14px;
+            position: absolute;
+            top: 123px;
+            left: 170px;
+        }
+
+        .list ul li .item .right .buy {
+            width: 80px;
+            height: 30px;
+            background: #c9040d;
+            text-align: center;
+            line-height: 30px;
+            font-size: 12px;
+            color: white;
+            border-radius: 40px;
+            position: absolute;
+            right: 10px;
+            top: 120px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+        }
+
+        ::-webkit-scrollbar:hover {
+            background-color: #eee;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: #888;
+        }
+
+        .loading {
+            text-align: center;
+            width: 100%;
+            font-size: 12px;
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
+    <div class="list" id="list">
+        <ul></ul>
+    </div>
+    <script src="../../src/vlist-vertical.js"></script>
+    <script type="text/javascript">
+        // init vConsole
+        var vConsole = new VConsole();
+        var pageIndex = 1;
+        function load() {
+            let param = { page: pageIndex, pagesize: 22 };
+            let url = `https://wqcoss.jd.com/mcoss/reclike/getrecinfo?pi=${pageIndex}&pc=22&recpos=6163&hi=${encodeURIComponent(JSON.stringify(param))}&_=${new Date().getTime()}`;
+            $.ajax({
+                url: url,
+                type: 'get',
+                async: false,
+                dataType: 'jsonp',
+                jsonp: "callback",
+                jsonpCallback: "success_jsonpCallback",
+                success: function (resp) {
+                    let data = resp.data;
+                    if (pageIndex == 1) {
+                        vlist = new Vlist({
+                            itemHeight: 180,
+                            container: document.querySelector("#list"),
+                            maxHeight: document.documentElement.clientHeight,
+                            loadData: load,
+                            initData: data,
+                            render: function (itemData, index) {
+                                return `
+                                    <div class="item">
+                                        <img src="//img12.360buyimg.com/mobilecms/s372x372_${itemData.img}"/>
+                                        <div class="right">
+                                            <div class="title">${itemData.t}</div>
+                                            <div class="price">¥${itemData.jp}</div>
+                                            <div class="buy">立即购买</div>
+                                        </div>
+                                    </div>
+                                `
+                            }
+                        });
+                    } else {
+                        vlist.addData(data);
+                    }
+                    pageIndex++;
+                },
+                complete: function () {
+                }
+            });
+        }
+
+        load();
+
+    </script>
+</body>
+
+</html>
